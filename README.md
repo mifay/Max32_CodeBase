@@ -34,7 +34,7 @@ Prerequisites
 * [Download and install MPIDE](http://chipkit.org/wiki/?title=MPIDE_Installation)
 * [Buy a Max32](http://www.digilentinc.com/Products/Detail.cfm?Prod=CHIPKIT-MAX32)
 * [Buy a 12 bits ADC](http://www.digikey.ca/product-detail/en/MCP3208-CI%2FP/MCP3208-CI%2FP-ND/305928?cur=USD)
-* [Buy an LSM330 MPIDE](http://ca.mouser.com/ProductDetail/STMicroelectronics/LSM330DL/?qs=sGAEpiMZZMvhQj7WZhFIABvlHH1EqRb7AHxxrBGGw5U%3d)
+* [Buy an LSM330](http://ca.mouser.com/ProductDetail/STMicroelectronics/LSM330DL/?qs=sGAEpiMZZMvhQj7WZhFIABvlHH1EqRb7AHxxrBGGw5U%3d)
 * [Buy a L3G4200D](https://www.sparkfun.com/products/10612?)
 
 
@@ -59,9 +59,10 @@ ADC 12 bits code
 ----------------
 
 The ADC input value is calculated : AdcOutputValue/4096*5 = AdcInputValueInVolts
-For a 5V ADC input value, you should read 4096 on the monitor.
-For a 3.3V ADC input value, you should read a value around 2700 on the monitor.
-For a 0V ADC input value, you should read 0 on the monitor.
+
+* For a 5V ADC input value, you should read 4096 on the monitor.
+* For a 3.3V ADC input value, you should read a value around 2700 on the monitor.
+* For a 0V ADC input value, you should read 0 on the monitor.
 
 
 LSM330 accelerometer code
