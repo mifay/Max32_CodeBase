@@ -1,0 +1,16 @@
+Master = Microcontroller
+Slave = Electronic Component
+
+MISO = Slave -> Master
+MOSI = Master -> Slave
+
+              __________
+        CH0 -|          |- VDD  (5v)
+        CH1 -|          |- Vref (5v)
+        CH2 -|          |- AGND (gnd)
+        CH3 -|          |- CLK  (Clock)
+        CH4 -|          |- Dout (MISO) - Master Input Slave Output
+        CH5 -|          |- Din  (MOSI) - Master Output Slave Input
+        CH6 -|          |- CS/SHDN (Selection pin) - Slave Select
+        CH7 -|          |- DGND (gnd)
+             |__________|
