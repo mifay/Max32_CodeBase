@@ -4,28 +4,28 @@ Overview
 This repository contains code projects with the Max32 microcontroller. The code projects are presented below.
 
 
-    ADC 12 bits code
-    ----------------
-    
-    This code project is about making the Max32 communicate via an SPI channel with a 12 bits ADC.
+ADC 12 bits code
+----------------
 
-    
-    LSM330 accelerometer code
-    -------------------------
-    
-    This code project is about making the Max32 communicate via an SPI channel with the LSM330 accelerometer.
-  
-  
-    LSM330 gyroscope code
-    ---------------------
-    
-    This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope.
+This code project is about making the Max32 communicate via an SPI channel with a 12 bits ADC.
 
-    
-    L3G4200D gyroscope code
-    -----------------------
-    
-    This code project is about making the Max32 communicate via an SPI channel with the L3G4200D gyroscope.
+
+LSM330 accelerometer code
+-------------------------
+
+This code project is about making the Max32 communicate via an SPI channel with the LSM330 accelerometer.
+
+
+LSM330 gyroscope code
+---------------------
+
+This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope.
+
+
+L3G4200D gyroscope code
+-----------------------
+
+This code project is about making the Max32 communicate via an SPI channel with the L3G4200D gyroscope.
 
     
     
@@ -55,31 +55,31 @@ Program execution setup
 Data interpretation
 ===================
 
-    ADC 12 bits code
-    ----------------
-    
-    The ADC input value is calculated : AdcOutputValue/4096*5 = AdcInputValueInVolts
-    For a 5V ADC input value, you should read 4096 on the monitor.
-    For a 3.3V ADC input value, you should read a value around 2700 on the monitor.
-    For a 0V ADC input value, you should read 0 on the monitor.
+ADC 12 bits code
+----------------
 
-    
-    LSM330 accelerometer code
-    -------------------------
-    
-    The LSM330 accelerometer output value is a linear acceleration measured in g
-  
-  
-    LSM330 gyroscope code
-    ---------------------
-    
-    The LSM330 gyro output value is an angular rate measured in degrees per second (dps)
+The ADC input value is calculated : AdcOutputValue/4096*5 = AdcInputValueInVolts
+For a 5V ADC input value, you should read 4096 on the monitor.
+For a 3.3V ADC input value, you should read a value around 2700 on the monitor.
+For a 0V ADC input value, you should read 0 on the monitor.
 
-    
-    L3G4200D gyroscope code
-    -----------------------
 
-    The L3G4200D output value is is an angular rate measured in degrees per second (dps)
+LSM330 accelerometer code
+-------------------------
+
+The LSM330 accelerometer output value is a linear acceleration measured in g
+
+
+LSM330 gyroscope code
+---------------------
+
+The LSM330 gyro output value is an angular rate measured in degrees per second (dps)
+
+
+L3G4200D gyroscope code
+-----------------------
+
+The L3G4200D output value is is an angular rate measured in degrees per second (dps)
     
     
     
