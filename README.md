@@ -27,8 +27,14 @@ L3G4200D gyroscope code
 
 This code project is about making the Max32 communicate via an SPI channel with the L3G4200D gyroscope.
 
-    
-    
+
+HMC5883L magnetometer code
+--------------------------
+
+This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer.
+
+
+
 Prerequisites
 =============
 * [Download and install MPIDE](http://chipkit.org/wiki/?title=MPIDE_Installation)
@@ -36,9 +42,10 @@ Prerequisites
 * [Buy a 12 bits ADC](http://www.digikey.ca/product-detail/en/MCP3208-CI%2FP/MCP3208-CI%2FP-ND/305928?cur=USD)
 * [Buy an LSM330](http://ca.mouser.com/ProductDetail/STMicroelectronics/LSM330DL/?qs=sGAEpiMZZMvhQj7WZhFIABvlHH1EqRb7AHxxrBGGw5U%3d)
 * [Buy a L3G4200D](https://www.sparkfun.com/products/10612?)
+* [Buy an HMC5883L](https://www.sparkfun.com/products/10530)
 
 
- 
+
 Program execution setup
 =======================
 
@@ -80,10 +87,21 @@ The LSM330 gyro output value is an angular rate measured in degrees per second (
 L3G4200D gyroscope code
 -----------------------
 
-The L3G4200D output value is is an angular rate measured in degrees per second (dps)
-    
-    
-    
+The L3G4200D output value is an angular rate measured in degrees per second (dps)
+
+
+HMC5883L magnetometer code
+--------------------------
+
+The HMC5883L output value is in degrees. From 0 to 359.9
+
+* If it points to the North, the heading value should be 0.
+* If it points to the East, the heading value should be 90.
+* If it points to the South, the heading value should be 180.
+* If it points to the West, the heading value should be 270.
+
+
+
 Authors
 =======
 * Michaël Fayad
