@@ -34,6 +34,14 @@ HMC5883L magnetometer code
 This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer.
 
 
+HMC5883L magnetometer code with LSM330 accelerometer code
+----------------------------------------------------------
+
+This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer and communication in SPI with the LSM330 accelerometer.
+
+The accelerometer is used to compensate the tilting of the compass. The accelerometer can compensate up to 44 degrees of compass tilting. Also, there must be no other acceleration than earth's gravitational acceleration.
+
+
 
 Prerequisites
 =============
@@ -99,6 +107,18 @@ The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
 * If it points to the East, the heading value should be 90.
 * If it points to the South, the heading value should be 180.
 * If it points to the West, the heading value should be 270.
+
+
+HMC5883L magnetometer code with LSM330 accelerometer code
+---------------------------------------------------------
+The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
+
+* If it points to the North, the heading value should be 0.
+* If it points to the East, the heading value should be 90.
+* If it points to the South, the heading value should be 180.
+* If it points to the West, the heading value should be 270.
+
+The LSM330 accelerometer output value is a linear acceleration measured in g. The output data is properly scaled.
 
 
 

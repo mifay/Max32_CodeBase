@@ -25,7 +25,7 @@
             </dd>
             <dd>
                 <h2><a href="./L3G4200D/">L3G4200D gyroscope code</a></h2>
-                <p>This code project is about making the Max32 communicate via an SPI channel with the L3G4200D gyroscope.</p>
+                <p>This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer and communication in SPI with the LSM330 accelerometer.</p>
                 <a href="./L3G4200D/doc">Documentation</a>
             </dd>
             <dd>
@@ -33,6 +33,12 @@
                 <p>This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer.</p>
                 <a href="./HMC5883L/doc">Documentation</a>
             </dd>
+            <dd>
+                <h2><a href="./HMC5883La/">HMC5883L magnetometer code with LSM330 accelerometer code</a></h2>
+                <p>This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer.</p>
+                <p>The accelerometer is used to compensate the tilting of the compass. The accelerometer can compensate up to 44 degrees of compass tilting. Also, there must be no other acceleration than earth's gravitational acceleration.</p>
+                <a href="./HMC5883La/doc">Documentation</a>
+            </dd>            
         </div>
         <div>
             <h1>Prerequisites</h1>
@@ -103,6 +109,16 @@
                 <p>If it points to the West, the heading value should be 270.</p>
                 <a href="./HMC5883L/doc">Documentation</a>
             </dd>
+            <dd>
+                <h2><a href="./HMC5883La/">HMC5883L magnetometer code with LSM330 accelerometer code</a></h2>
+                <p>The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees. </p>
+                <p>If it points to the North, the heading value should be 0.</p>
+                <p>If it points to the East, the heading value should be 90.</p>
+                <p>If it points to the South, the heading value should be 180.</p>
+                <p>If it points to the West, the heading value should be 270.</p>
+                <p>The LSM330 accelerometer output value is a linear acceleration measured in g. The output data is properly scaled.</p>
+                <a href="./HMC5883La/doc">Documentation</a>
+            </dd>            
         </div>
         <div>
             <h1>Authors</h1>
