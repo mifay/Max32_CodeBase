@@ -75,25 +75,25 @@ The ADC input value is calculated : AdcOutputValue/4096*5 = AdcInputValueInVolts
 LSM330 accelerometer code
 -------------------------
 
-The LSM330 accelerometer output value is a linear acceleration measured in g
+The LSM330 accelerometer output value is a linear acceleration measured in g when the raw data is properly scaled.
 
 
 LSM330 gyroscope code
 ---------------------
 
-The LSM330 gyro output value is an angular rate measured in degrees per second (dps)
+The LSM330 gyro output value is an angular rate measured in degrees per second (dps) when the raw data is properly scaled.
 
 
 L3G4200D gyroscope code
 -----------------------
 
-The L3G4200D output value is an angular rate measured in degrees per second (dps)
+The L3G4200D output value is an angular rate measured in degrees per second (dps) when the raw data is properly scaled.
 
 
 HMC5883L magnetometer code
 --------------------------
 
-The HMC5883L output value is in degrees. From 0 to 359.9
+The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
 
 * If it points to the North, the heading value should be 0.
 * If it points to the East, the heading value should be 90.
