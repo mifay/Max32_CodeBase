@@ -1,0 +1,18 @@
+/*
+ * Pin table
+ * ==========
+ * HMC5883L ->                   Max32
+ * 3v3      ->                   3v3
+ * GND      ->                   GND
+ * SDA      ->(4.7k pull-up)  -> SDA1 (20)
+ * SCL      ->(4.7k pull-up)  -> SCL1 (21)
+ *
+ * LSM330   ->                   Max32
+ * 3v3      ->                   3V3
+ * GND      ->                   GND
+ * SDO      ->                   SDI(J13-1)(first pin)
+ * SCL      ->                   SCL(J13-3)
+ * INT2     ->                   (6)
+ * CS       ->                   (10)
+ * SDI      ->                   SDO(J13-4)
+ */
