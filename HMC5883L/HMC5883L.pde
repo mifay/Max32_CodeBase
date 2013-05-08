@@ -86,7 +86,7 @@ void setup()
  */
 void loop()
 {
-    int x,y,z; //triple axis data
+    int16_t x,y,z; //triple axis data
 
     //Tell the HMC5883 where to begin reading data
     Wire.beginTransmission(HMC_ADDRESS);
