@@ -133,11 +133,40 @@ void writeRegister(byte address, byte data)
 ///////////////////////////////////////////////////////////
 void setupLSM330()
 {
-    // Check the datasheet (p29) - default register values
+    // Check the datasheet (p29)
+    
+    // Normal (1.344 kHz) / low-power mode (5.376 kHz) data rate
+    // Normal mode selected (default)
+    // x,y,z axis enabled (default)
     writeRegister(CTRL_REG1, 0b10010111);
+    
+    // High-pass filter mode selection : Normal mode (reset reading HP_RESET_FILTER) (default)
+    // High-pass filter cutoff frequency selection
+    // Filtered data selection : internal filter bypassed (default)
+    // High-pass filter enabled for CLICK function : filter bypassed
+    // High-pass filter enabled for AOI function on interrupt 2 : filter bypassed
+    // High-pass filter enabled for AOI function on interrupt 1 : filter bypassed
     writeRegister(CTRL_REG2, 0b00000000);
+    
+    // CLICK interrupt on INT1_A disabled (default)
+    // AOI1 interrupt on INT1_A disabled (default)
+    // DRDY1 interrupt on INT1_A disabled (default)
+    // DRDY2 interrupt on INT1_A disabled (default)
+    // FIFO watermark interrupt on INT1_A enabled
+    // FIFO overrun interrupt on INT1_A disabled (default)
     writeRegister(CTRL_REG3, 0b00001000);
+    
+    // Continuous block data update (default)
+    // Big/little endian data selection : Data LSB at lower address (default)
+    // Full-scale selection  +/- 16G
+    // Normal mode enable
+    // SPI serial interface mode selection : 4 wire interface (default)
     writeRegister(CTRL_REG4, 0b00111000);
+    
+    // normal mode, no reboot memory content (default)
+    // FIFO enabled
+    // interrupt request not latched (default)
+    // 4D detection disabled
     writeRegister(CTRL_REG5, 0b01000000);
 }
 
