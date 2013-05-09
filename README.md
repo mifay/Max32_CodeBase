@@ -22,6 +22,12 @@ LSM330 gyroscope code
 This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope.
 
 
+LSM330 gyroscope and accelerometer code
+---------------------------------------
+
+This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope and accelerometer.
+
+
 L3G4200D gyroscope code
 -----------------------
 
@@ -90,6 +96,14 @@ LSM330 gyroscope code
 ---------------------
 
 The LSM330 gyro output value is an angular rate measured in degrees per second (dps).
+
+
+LSM330 gyroscope and accelerometer code
+---------------------------------------
+
+The LSM330 gyro output value is an angular rate measured in degrees per second (dps).
+
+The LSM330 accelerometer output value is a linear acceleration measured in g.
 
 
 L3G4200D gyroscope code
