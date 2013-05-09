@@ -38,6 +38,12 @@
 #include <SPI.h>
 #include "lsm330a.h"
 
+// Accelerometer scale values
+#define SCALE_FOR_2G 0.0001
+#define SCALE_FOR_4G 0.0002
+#define SCALE_FOR_8G 0.0004
+#define SCALE_FOR_16G 0.0012
+
 // pin definitions
 const int int2pin = 6;
 const int chipSelect = 10;
@@ -78,6 +84,11 @@ void loop()
 
     getAccValues();  // This will update x, y, and z with new values
 
+    // scale accelerometer values
+    x *= SCALE_FOR_16G;
+    y *= SCALE_FOR_16G;
+    z *= SCALE_FOR_16G;
+    
     // Display raw accelaration values
     Serial.print(x, DEC);
     Serial.print("\t");

@@ -38,6 +38,11 @@
 #include <SPI.h>
 #include "lsm330g.h"
 
+// Gyro scale values
+#define SCALE_FOR_250_DPS 0.000875
+#define SCALE_FOR_500_DPS 0.00175
+#define SCALE_FOR_2000_DPS 0.0070
+
 // pin definitions
 const int int2pin = 6;
 const int chipSelect = 10;
@@ -50,22 +55,22 @@ int16_t x, y, z;
 ///////////////////////////////////////////////////////////
 void setup()
 {
-  Serial.begin(115200);
-  
-  // Start the SPI library:
-  SPI.begin();
-  SPI.setDataMode(SPI_MODE3);
-  SPI.setClockDivider(SPI_CLOCK_DIV2);
-  
-  // Set pin values
-  pinMode(int2pin, INPUT);
-  pinMode(chipSelect, OUTPUT);
-  digitalWrite(chipSelect, HIGH);
-  
-  //delay(100); // TBR: might be useless
-  
-  // Configure LSM330
-  setupLSM330();
+    Serial.begin(115200);
+
+    // Start the SPI library:
+    SPI.begin();
+    SPI.setDataMode(SPI_MODE3);
+    SPI.setClockDivider(SPI_CLOCK_DIV2);
+
+    // Set pin values
+    pinMode(int2pin, INPUT);
+    pinMode(chipSelect, OUTPUT);
+    digitalWrite(chipSelect, HIGH);
+
+    //delay(100); // TBR: might be useless
+
+    // Configure LSM330
+    setupLSM330();
 }
 
 ///////////////////////////////////////////////////////////
@@ -73,19 +78,24 @@ void setup()
 ///////////////////////////////////////////////////////////
 void loop()
 {
-  // Don't read gyro values until the gyro says it's ready
-  while(!digitalRead(int2pin));
-  
-  getGyroValues();  // This will update x, y, and z with new values
-  
-  // Print gyro values
-  Serial.print(x, DEC);
-  Serial.print("\t");
-  Serial.print(y, DEC);
-  Serial.print("\t");
-  Serial.print(z, DEC);
-  Serial.print("\t");
-  Serial.println();
+    // Don't read gyro values until the gyro says it's ready
+    while(!digitalRead(int2pin));
+
+    getGyroValues();  // This will update x, y, and z with new values
+
+    // scale gyro values
+    x *= SCALE_FOR_2000_DPS;
+    y *= SCALE_FOR_2000_DPS;
+    z *= SCALE_FOR_2000_DPS;
+
+    // Print gyro values
+    Serial.print(x, DEC);
+    Serial.print("\t");
+    Serial.print(y, DEC);
+    Serial.print("\t");
+    Serial.print(z, DEC);
+    Serial.print("\t");
+    Serial.println();
 }
 
 ///////////////////////////////////////////////////////////
@@ -97,17 +107,17 @@ void loop()
 ///////////////////////////////////////////////////////////
 int readRegister(byte address)
 {
-  int toRead;
-  
-  // This address is to tell the LSM330 that we're reading
-  address |= 0x80;
-  
-  digitalWrite(chipSelect, LOW);
-  SPI.transfer(address);
-  toRead = SPI.transfer(0x00);
-  digitalWrite(chipSelect, HIGH);
-  
-  return toRead;
+    int toRead;
+
+    // This address is to tell the LSM330 that we're reading
+    address |= 0x80;
+
+    digitalWrite(chipSelect, LOW);
+    SPI.transfer(address);
+    toRead = SPI.transfer(0x00);
+    digitalWrite(chipSelect, HIGH);
+
+    return toRead;
 }
 
 ///////////////////////////////////////////////////////////
@@ -118,13 +128,13 @@ int readRegister(byte address)
 ///////////////////////////////////////////////////////////
 void writeRegister(byte address, byte data)
 {
-  // This address is to tell the LSM330 that we're writing
-  address &= 0x7F;
-  
-  digitalWrite(chipSelect, LOW);
-  SPI.transfer(address);
-  SPI.transfer(data);
-  digitalWrite(chipSelect, HIGH);
+    // This address is to tell the LSM330 that we're writing
+    address &= 0x7F;
+
+    digitalWrite(chipSelect, LOW);
+    SPI.transfer(address);
+    SPI.transfer(data);
+    digitalWrite(chipSelect, HIGH);
 }
 
 
@@ -167,12 +177,12 @@ void setupLSM330()
 ///////////////////////////////////////////////////////////
 void getGyroValues()
 {
-  x = (readRegister(0x29)&0xFF)<<8;
-  x |= (readRegister(0x28)&0xFF);
-  
-  y = (readRegister(0x2B)&0xFF)<<8;
-  y |= (readRegister(0x2A)&0xFF);
-  
-  z = (readRegister(0x2D)&0xFF)<<8;
-  z |= (readRegister(0x2C)&0xFF);
+    x = (readRegister(0x29)&0xFF)<<8;
+    x |= (readRegister(0x28)&0xFF);
+
+    y = (readRegister(0x2B)&0xFF)<<8;
+    y |= (readRegister(0x2A)&0xFF);
+
+    z = (readRegister(0x2D)&0xFF)<<8;
+    z |= (readRegister(0x2C)&0xFF);
 }
