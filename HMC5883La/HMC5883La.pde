@@ -59,9 +59,9 @@
 
 // Accelerometer scale values
 #define SCALE_FOR_2G 0.0001
-#define SCALE_FOR_4G 0.002
-#define SCALE_FOR_8G 0.004
-#define SCALE_FOR_16G 0.012
+#define SCALE_FOR_4G 0.0002
+#define SCALE_FOR_8G 0.0004
+#define SCALE_FOR_16G 0.0012
 
 // accelerometer pin definitions
 const int int2pin = 6;
