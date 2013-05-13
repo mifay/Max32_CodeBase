@@ -61,7 +61,7 @@
 #define SCALE_FOR_2G 0.0000637 // in g/counts (calibrated)
 #define SCALE_FOR_4G 0.0002 // in g/counts (not calibrated)
 #define SCALE_FOR_8G 0.0004 // in g/counts (not calibrated)
-#define SCALE_FOR_16G 0.0012 // in g/counts (not calibrated)
+#define SCALE_FOR_16G 0.00078 // in g/counts (calibrated)
 
 // accelerometer pin definitions
 const int int2pin = 6;
