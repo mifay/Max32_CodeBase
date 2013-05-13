@@ -39,10 +39,10 @@
 #include "lsm330.h"
 
 // Accelerometer scale values
-#define SCALE_FOR_2G 0.0001
-#define SCALE_FOR_4G 0.0002
-#define SCALE_FOR_8G 0.0004
-#define SCALE_FOR_16G 0.0012
+#define SCALE_FOR_2G 0.0000637 // in g/counts (calibrated)
+#define SCALE_FOR_4G 0.0002 // in g/counts (not calibrated)
+#define SCALE_FOR_8G 0.0004 // in g/counts (not calibrated)
+#define SCALE_FOR_16G 0.0012 // in g/counts (not calibrated)
 
 // Gyro scale values
 #define SCALE_FOR_250_DPS 0.000875
@@ -270,7 +270,3 @@ void getAccelValues()
     az = (readRegister(chipSelectAccel, 0x2D)&0xFF)<<8;
     az |= (readRegister(chipSelectAccel, 0x2C)&0xFF);
 }
-
-
-
-
