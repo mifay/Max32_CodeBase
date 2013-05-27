@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with hmc5883l.h.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <stdint.h> // to use int16_t type to avoid sign extension problems with read output data
+
 // Compass values and registers
 #define HMC_ADDRESS 0x1E
 #define CONFIG_REG_A 0x00
@@ -27,3 +29,30 @@
 #define DATA_REG_BEGIN 0x03
 #define ID_REG 0x0A
 #define ID_REG_VALUE 0x48
+
+class HMC5883L
+{
+    public:
+        void setup(float gain);
+        bool readMagnetism();
+        float calcHeading(float rollRadians, float pitchRadians/*, float yawRadians*/);
+        
+        int16_t magnX_; // in counts
+        int16_t magnY_; // in counts
+        int16_t magnZ_; // in counts
+        
+        int16_t scaledMagnX_; // in Gauss        
+        int16_t scaledMagnY_; // in Gauss        
+        int16_t scaledMagnZ_; // in Gauss        
+        
+        float heading_; // In degrees
+    private:
+        void setGain(float gain);
+        
+        // Attributes
+        float gain_;  // in Gauss
+        float scale_; // multiplicator to scale compass output (in miliGaus/counts)
+        int gainRegVal_; // register value to set compass gain
+};
+
+

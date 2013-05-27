@@ -44,7 +44,6 @@
 #include "lsm330a_config.h"
 #include "lsm330g_config.h"
 #include "hmc5883l.h"
-#include "hmc5883l_config.h"
 
 // pin definitions
 const int chipSelectGyro = 6;
@@ -64,10 +63,7 @@ float gThresholdX = 0.0; float gThresholdY = 0.0; float gThresholdZ = 0.0;
 int16_t ax = 0; int16_t ay = 0; int16_t az = 0;
 float scaledAx = 0.0; float scaledAy = 0.0; float scaledAz = 0.0;
 
-// compass readings
-int16_t mx = 0; int16_t my = 0; int16_t mz = 0;
-float scaledMx = 0.0; float scaledMy = 0.0; float scaledMz = 0.0;
-float headingM = 0.0;
+HMC5883L compass;
 
 /*
  * Max32 setup function. Executed at program beginning
@@ -98,13 +94,12 @@ void setup()
     setupLSM330a();
     setupLSM330g();
 
-    // Configure compass
-    setupHMC5883L();
+    compass.setup(1.3);
 
     // Don't move the device for 5 seconds
     calculateGyroOffsets();
     calculateGyroThresholds();
-    
+
     qInit(0,0,0);
 }
 
@@ -117,10 +112,10 @@ void setup()
 void loop()
 {
     tBegin = micros();
-    
+
     // This will update gx, gy, and gz with new values
     getGyroValues();
-    
+
     float deltaGx = (float)gx - gOffsetX;
     float deltaGy = (float)gy - gOffsetY;
     float deltaGz = (float)gz - gOffsetZ;
@@ -149,28 +144,10 @@ void loop()
     else
     {
         scaledGz = deltaGz * GYRO_SENSITIVITY;
-    }    
-    
-    //Tell the HMC5883 where to begin reading data
-    Wire.beginTransmission(HMC_ADDRESS);
-    Wire.send(DATA_REG_BEGIN); //select register 3, X MSB register
-    Wire.endTransmission();
+    }
 
-    //Read data from each axis, 2 registers per axis
-    Wire.requestFrom(HMC_ADDRESS, 6);
-    if(6<=Wire.available())
+    if(compass.readMagnetism())
     {
-        mx = Wire.receive()<<8;  //X msb
-        mx |= Wire.receive();    //X lsb
-        mz = Wire.receive()<<8;  //Z msb
-        mz |= Wire.receive();    //Z lsb
-        my = Wire.receive()<<8;  //Y msb
-        my |= Wire.receive();    //Y lsb
-
-        scaledMx = COMPASS_SCALE * (float)mx;
-        scaledMy = COMPASS_SCALE * (float)my;
-        scaledMz = COMPASS_SCALE * (float)mz;
-        
         getAccelValues();  // This will update accel x, y, and z with new values
 
         // Configure accel axis according to your setup. My accel axis were the opposite of the magneto axis
@@ -183,47 +160,22 @@ void loop()
         float rollRadians = asin(scaledAy);
         float pitchRadians = asin(scaledAx);
 
-        // We cannot correct for tilt over 44 degrees with this algorithm, if the board is tilted as such, do nothing...
         if(rollRadians > 0.78 || rollRadians < -0.78 || pitchRadians > 0.78 || pitchRadians < -0.78)
         {
-            // do nothing
+            // We cannot correct for tilt over 44 degrees with this algorithm, if the board is tilted as such, do nothing...
         }
         else
         {
-            // Compensate magneto tilt with accelero values
-            float cosRoll = cos(rollRadians);
-            float sinRoll = sin(rollRadians);
-            float cosPitch = cos(pitchRadians);
-            float sinPitch = sin(pitchRadians);
+            compass.calcHeading(rollRadians, pitchRadians/*, yawRadians*/);
 
-            float Xh = scaledMx * cosPitch + scaledMz * sinPitch;
-            float Yh = scaledMx * sinRoll * sinPitch + scaledMy * cosRoll - scaledMz * sinRoll * cosPitch;
-
-            headingM = atan2(Yh, Xh);
-
-            // Correct for when signs are reversed.
-            if(headingM < 0)
-            {
-                headingM += 2.0*PI;
-            }
-
-            // Check for wrap due to addition of declination.
-            if(headingM > 2.0*PI)
-            {
-                headingM -= 2.0*PI;
-            }
-
-            // Radians to degrees
-            headingM = headingM * 180.0/PI;  
-            
-            //printAll();             
+            printAll();
         }
     }
-    
+
     tEnd = micros();
     float deltaT = tEnd - tBegin;
-    quaternionUpdateWithRates(deltaT);  
-    printAttitude();
+    quaternionUpdateWithRates(deltaT);
+    //printAttitude();
 }
 
 ///////////////////////////////////////////////////////////
@@ -336,33 +288,6 @@ void setupLSM330g()
     writeRegister(chipSelectGyro, CTRL_REG5, 0b00000000);
 }
 
-/*
- * Setup HMC5883L i2c compass
- *
- * in  :
- * out :
- */
-void setupHMC5883L()
-{
-    // Put the HMC5883 IC into the correct operating mode
-    Wire.beginTransmission(HMC_ADDRESS); // open communication with HMC5883
-    Wire.send(MODE_REG);                 // select mode register
-    Wire.send(CONTINUOUS_MEASUREMENT);   // continuous measurement mode
-    Wire.endTransmission();
-
-    // Improve HMC datarate to 75Hz
-    Wire.beginTransmission(HMC_ADDRESS);
-    Wire.send(CONFIG_REG_A);
-    Wire.send(OUTPUT_DATA_RATE_75_HZ);
-    Wire.endTransmission();
-
-    // Set to best magnetism perceptibility, but lowest accuracy.
-    Wire.beginTransmission(HMC_ADDRESS);
-    Wire.send(CONFIG_REG_B);
-    Wire.send(COMPASS_GAIN);
-    Wire.endTransmission();
-}
-
 ///////////////////////////////////////////////////////////
 // Get gyroscope values function
 ///////////////////////////////////////////////////////////
@@ -434,14 +359,14 @@ void printAccelero()
  */
 void printMagneto()
 {
-    /*Serial.print(scaledMx);
+/*  Serial.print(compass.scaledMagnX_);
     Serial.print("\t");
-    Serial.print(scaledMy);
+    Serial.print(compass.scaledMagnY_);
     Serial.print("\t");
-    Serial.print(scaledMz);
+    Serial.print(compass.scaledMagnZ_);
     Serial.println("\t Gauss");*/
-    
-    Serial.print(headingM);
+
+    Serial.print(compass.heading_);
     Serial.println("\t deg");
 }
 
@@ -453,8 +378,8 @@ void printMagneto()
  */
 void printAll()
 {
-    printGyro();
-    printAccelero();
+    //printGyro();
+    //printAccelero();
     printMagneto();
     Serial.println();
 }
@@ -471,26 +396,26 @@ void printAttitude()
     float q1Deg = q1 * 180.0/PI;
     float q2Deg = q2 * 180.0/PI;
     float q3Deg = q3 * 180.0/PI;
-    
+
     Serial.print(q0Deg);
     Serial.print("\t");
     Serial.print(q1Deg);
     Serial.print("\t");
     Serial.print(q2Deg);
     Serial.print("\t");
-    Serial.print(q3Deg);    
+    Serial.print(q3Deg);
     Serial.println("\t deg");*/
-    
+
     float roll = getQRoll() * 180.0/PI;
     float pitch = getQPitch() * 180.0/PI;
     float yaw = getQYaw() * 180.0/PI;
-    
+
     Serial.print(roll);
     Serial.print("\t");
     Serial.print(pitch);
     Serial.print("\t");
-    Serial.print(yaw);   
-    Serial.println("\t deg");    
+    Serial.print(yaw);
+    Serial.println("\t deg");
 }
 
 /*
@@ -575,7 +500,7 @@ void calculateGyroThresholds()
 void quaternionUpdateWithRates(unsigned long dt_us)
 {
     float dt = (float)dt_us / 1000000.0;
-    
+
     float w1 = scaledGy * PI/180.0;
     float w2 = scaledGx * PI/180.0;
     float w3 = scaledGz * PI/180.0;
@@ -592,7 +517,7 @@ void quaternionUpdateWithRates(unsigned long dt_us)
 
     float norm = sqrtf(q0*q0 + q1*q1 + q2*q2 + q3*q3);
 
-    q0 /= norm;   
+    q0 /= norm;
     q1 /= norm;
     q2 /= norm;
     q3 /= norm;
@@ -601,22 +526,21 @@ void quaternionUpdateWithRates(unsigned long dt_us)
 float getQRoll()
 {
     float r;
-    r = atan2( 2.0 * ( q2*q3 + q0*q1 ),(1.0 - 2.0 * (q1*q1 + q2*q2)) );  
+    r = atan2( 2.0 * ( q2*q3 + q0*q1 ),(1.0 - 2.0 * (q1*q1 + q2*q2)) );
     return r;
-}       
-
+}
 
 float getQPitch()
 {
     float r;
-    r = asinf( -2.0 * (q1*q3 - q0*q2) );    
+    r = asinf( -2.0 * (q1*q3 - q0*q2) );
     return r;
 }
 
 float getQYaw()
 {
     float r;
-    r = atan2( 2.0 * ( q0*q3 + q1*q2 ) ,(1.0 - 2.0 * (q2*q2 + q3*q3)) );  
+    r = atan2( 2.0 * ( q0*q3 + q1*q2 ) ,(1.0 - 2.0 * (q2*q2 + q3*q3)) );
     return r;
 }
 
@@ -638,7 +562,7 @@ void qInit(float roll,float pitch,float yaw)
 
     float norm = sqrtf(q0*q0 + q1*q1 + q2*q2 + q3*q3);
 
-    q0 /= norm;   
+    q0 /= norm;
     q1 /= norm;
     q2 /= norm;
     q3 /= norm;
