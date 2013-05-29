@@ -14,6 +14,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with hmc5883l.h.  If not, see <http://www.gnu.org/licenses/>.
+//
+//
+// source :  - Love Electronics (loveelectronics.com)
+//           - Jordan McConnell, SparkFun Electronics
 
 #include <stdint.h> // to use int16_t type to avoid sign extension problems with read output data
 
@@ -41,18 +45,18 @@ class HMC5883L
         int16_t magnY_; // in counts
         int16_t magnZ_; // in counts
         
-        int16_t scaledMagnX_; // in Gauss        
-        int16_t scaledMagnY_; // in Gauss        
-        int16_t scaledMagnZ_; // in Gauss        
+        float scaledMagnX_; // in Gauss        
+        float scaledMagnY_; // in Gauss        
+        float scaledMagnZ_; // in Gauss        
         
         float heading_; // In degrees
     private:
         void setGain(float gain);
+        
+        bool isSetuped_;
         
         // Attributes
         float gain_;  // in Gauss
         float scale_; // multiplicator to scale compass output (in miliGaus/counts)
         int gainRegVal_; // register value to set compass gain
 };
-
-

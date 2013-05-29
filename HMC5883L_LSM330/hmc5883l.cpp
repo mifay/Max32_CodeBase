@@ -14,6 +14,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with hmc5883l.cpp.  If not, see <http://www.gnu.org/licenses/>.
+//
+//
+// source :  - Love Electronics (loveelectronics.com)
+//           - Jordan McConnell, SparkFun Electronics
 
 #include "hmc5883l.h"
 #include <Wire.h> // For i2c communication
@@ -23,11 +27,14 @@
 /*
  * Setup HMC5883L i2c compass
  *
- * in  :
+ * in  : gain : compass sensibility and accuracy
+ *
  * out :
  */
 void HMC5883L::setup(float gain)
 {   
+    this->isSetuped_ = true;
+    
     this->setGain(gain);
   
     // Put the HMC5883 IC into the correct operating mode
@@ -49,6 +56,15 @@ void HMC5883L::setup(float gain)
     Wire.endTransmission();
 }
 
+/*
+ * Set HMC5883L gain
+ *
+ * in  : gain : compass sensibility and accuracy
+ *
+ * out :
+ *
+ * N.B.: Can only be called during compass setup
+ */
 void HMC5883L::setGain(float gain)
 {
     if(gain == 8.1)
@@ -66,6 +82,14 @@ void HMC5883L::setGain(float gain)
     }
 }
 
+/*
+ * Read magnetism from the HMC5883L (i2c communication)
+ *
+ * in  : 
+ *
+ * out : true if data was available, else false
+ *
+ */
 bool HMC5883L::readMagnetism()
 {
     //Tell the HMC5883 where to begin reading data
@@ -103,6 +127,14 @@ bool HMC5883L::readMagnetism()
     }
 }
 
+/*
+ * Calculate compass heading from the Euler angles
+ *
+ * in  : Euler angles
+ *
+ * out : compass heading. (0 = North, 90 = East, 180 = South, 270 = West) in degrees
+ *
+ */
 float HMC5883L::calcHeading(float rollRadians, float pitchRadians/*, float yawRadians*/)
 {
     float cosRoll = cos(rollRadians);
