@@ -109,6 +109,10 @@ void loop()
         
         lsm.getAccelValues(chipSelectAccel);
     
+        // reset skip values for up to date data printing
+        skipCompass = true;
+        skipHeading = true;        
+    
         if(compass.readMagnetism())
         {
             skipCompass = false;
