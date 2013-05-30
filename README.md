@@ -10,48 +10,16 @@ ADC 12 bits code
 This code project is about making the Max32 communicate via an SPI channel with a 12 bits ADC.
 
 
-LSM330 accelerometer code
--------------------------
-
-This code project is about making the Max32 communicate via an SPI channel with the LSM330 accelerometer.
-
-
-LSM330 gyroscope code
----------------------
-
-This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope.
-
-
-LSM330 gyroscope and accelerometer code
----------------------------------------
-
-This code project is about making the Max32 communicate via an SPI channel with the LSM330 gyroscope and accelerometer.
-
-
 L3G4200D gyroscope code
 -----------------------
 
 This code project is about making the Max32 communicate via an SPI channel with the L3G4200D gyroscope.
 
 
-HMC5883L magnetometer code
---------------------------
+HMC5883L compass and LSM330 code
+--------------------------------
 
-This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer.
-
-
-HMC5883L magnetometer code with LSM330 accelerometer code
-----------------------------------------------------------
-
-This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer and communication in SPI with the LSM330 accelerometer.
-
-The accelerometer is used to compensate the tilting of the compass. The accelerometer can compensate up to 44 degrees of compass tilting. Also, there must be no other acceleration than earth's gravitational acceleration.
-
-
-HMC5883L magnetometer code with LSM330 accelerometer code and gyro code
-------------------------------------------------------------------------
-
-This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer and communication in SPI with the LSM330 accelerometer and gyroscope.
+This code project is about making the Max32 communicate in I2C with the HMC5883L magnetometer and communicate in SPI with the LSM330 accelerometer and gyroscope.
 
 The accelerometer is used to compensate the tilting of the compass. The accelerometer can compensate up to 44 degrees of compass tilting. Also, there must be no other acceleration than earth's gravitational acceleration.
 
@@ -97,34 +65,14 @@ The ADC input value is calculated : AdcOutputValue/4096*5 = AdcInputValueInVolts
 * For a 0V ADC input value, you should read 0 on the monitor.
 
 
-LSM330 accelerometer code
--------------------------
-
-The LSM330 accelerometer output value is a linear acceleration measured in g.
-
-
-LSM330 gyroscope code
----------------------
-
-The LSM330 gyro output value is an angular rate measured in degrees per second (dps).
-
-
-LSM330 gyroscope and accelerometer code
----------------------------------------
-
-The LSM330 gyro output value is an angular rate measured in degrees per second (dps).
-
-The LSM330 accelerometer output value is a linear acceleration measured in g.
-
-
 L3G4200D gyroscope code
 -----------------------
 
 The L3G4200D output value is an angular rate measured in degrees per second (dps).
 
 
-HMC5883L magnetometer code
---------------------------
+HMC5883L compass and LSM330 code
+--------------------------------
 
 The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
 
@@ -133,34 +81,11 @@ The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
 * If it points to the South, the heading value should be 180.
 * If it points to the West, the heading value should be 270.
 
-
-HMC5883L magnetometer code with LSM330 accelerometer code
----------------------------------------------------------
-The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
-
-* If it points to the North, the heading value should be 0.
-* If it points to the East, the heading value should be 90.
-* If it points to the South, the heading value should be 180.
-* If it points to the West, the heading value should be 270.
-
-The LSM330 accelerometer output value is a linear acceleration measured in g. The output data is properly scaled.
-
-
-HMC5883L magnetometer code with LSM330 accelerometer code and gyro code
-------------------------------------------------------------------------
-
-The HMC5883L output value is scaled in degrees. From 0 to 359.9 degrees.
-
-* If it points to the North, the heading value should be 0.
-* If it points to the East, the heading value should be 90.
-* If it points to the South, the heading value should be 180.
-* If it points to the West, the heading value should be 270.
-
-The LSM330 accelerometer output value is a linear acceleration measured in g. The output data is properly scaled.
+The LSM330 accelerometer output value is a linear acceleration measured in g.
 
 The LSM330 gyro output value is an angular rate measured in degrees per second (dps).
 
-The attitude value is in degrees.
+The attitude value is in degrees. The attitude is calculated with quaternions but displayed as Euler angles for better understanding.
 
 
 
@@ -168,3 +93,4 @@ Authors
 =======
 * Michaël Fayad
 * Raphaël Guimond
+* Guillaume Carrier
